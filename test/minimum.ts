@@ -1,11 +1,14 @@
-const { accounts, contract } = require("@openzeppelin/test-environment");
-const { constants, expectEvent, expectRevert } = require("@openzeppelin/test-helpers");
 
-const chai = require("chai");
+import { accounts, contract } from "@openzeppelin/test-environment";
+import { constants, expectEvent, expectRevert } from "@openzeppelin/test-helpers";
+import BN from "bn.js";
+import chai from "chai";
+import { MinimumInstance } from "../build/types";
+
+chai.use(require("chai-bn")(BN));
 const expect = chai.expect;
 
-const BN = require("bn.js");
-chai.use(require("chai-bn")(BN));
+// @ts-ignore : bignumber は型定義がない
 const expectBN = value => expect(value).to.be.a.bignumber;
 
 const [deployer, alice, bob, charlie] = accounts;
@@ -14,7 +17,7 @@ const MinimumContract = contract.fromArtifact("Minimum");
 const tokenIds = [1, 10, 123].map(x => new BN(x));
 
 describe("デプロイ直後", () => {
-    let instance;
+    let instance: MinimumInstance;
     const wei = new BN(1);
     const mintTokenId = tokenIds[0];
 
@@ -28,6 +31,7 @@ describe("デプロイ直後", () => {
     });
 
     it("コントラクトは ETH を受け取りません。", async () => {
+        // @ts-ignore
         const tx = instance.send(wei, { from: alice });
         await expectRevert(tx, "revert");
     });
@@ -62,7 +66,7 @@ describe("デプロイ直後", () => {
 });
 
 describe("トークン ミントの後", () => {
-    let instance;
+    let instance: MinimumInstance;
     const mintTokenIds = [tokenIds[0], tokenIds[1]];
     const burnTokenId = mintTokenIds[0];
     const inexistentTokenId = tokenIds[2];
@@ -98,7 +102,7 @@ describe("トークン ミントの後", () => {
     });
 
     it("ユーザーは所有するトークンを移転できます。", async () => {
-        const transferTx1 = instance.safeTransferFrom(
+        const transferTx1 = instance.methods["safeTransferFrom(address,address,uint256)"](
             alice, bob, mintTokenIds[0], { from: alice });
         expectEvent(await transferTx1, "Transfer", {
             from: alice,
@@ -144,7 +148,7 @@ describe("トークン ミントの後", () => {
 });
 
 describe("コントラクト所有者の設定", () => {
-    let instance;
+    let instance: MinimumInstance;
     const mintTokenId = tokenIds[0];
 
     beforeEach(async () => {
