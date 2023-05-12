@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "clean": "rm -rf build/ .openzeppelin/unknown-*.json",
+    "compile": "truffle compile",
+    "test": "mocha --exit --recursive --timeout 10s test/**/*.js"
+  },
+  "devDependencies": {
+    "@openzeppelin/test-environment": "^0.1.9",
+    "@openzeppelin/test-helpers": "^0.5.16",
+    "chai": "^4.3.7",
+    "chai-bn": "^0.3.1",
+    "mocha": "^10.2.0",
+    "truffle": "^5.9.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.8.3"
+  }
+}
