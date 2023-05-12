@@ -2,6 +2,13 @@
 
 ERC-721 のスマート コントラクトに対する最低限の動作チェックを行うテスト コードのサンプルです。
 
+## このブランチについて
+
+この `typescript` ブランチのコードは、[TypeScript](https://www.typescriptlang.org/) で記述されています。[package.json](./package.json) の下記の指定によって、テスト ランナー Mocha に `ts-node` ライブラリを使うよう指示することで、直接 TypeScript で記述されたテスト スクリプトを実行します。
+```json
+"test": "mocha --exit --recursive --timeout 10s -r ts-node/register test/**/*.ts"
+```
+
 ## 動作方法
 
 1. 適切なディレクトリでこのレポジトリをクローンし、ライブラリをダウンロードします。
